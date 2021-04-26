@@ -18,7 +18,7 @@ class QuickApplicationTests {
 
     @Test
     void contextLoads() {
-        TableDefinition beanDefinition = resolver.resolve("a", "D:/test");
+        TableDefinition beanDefinition = resolver.resolve("user", "D:/quick");
         AutoGeneration proxy = new AutoGeneration(beanDefinition);
         proxy.todo();
 
