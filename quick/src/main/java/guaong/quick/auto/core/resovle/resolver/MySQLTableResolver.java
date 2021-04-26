@@ -6,7 +6,7 @@ import guaong.quick.auto.core.util.DBUtil;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -34,17 +34,13 @@ public class MySQLTableResolver extends TableResolver {
         }
     }
 
+
     @Override
     public void resolveColumnsInfo(String tableName, TableDefinition tableDefinition, DatabaseMetaData metaData) {
-        Map<String, ColumnDefinition> attrDefinitionMap = new HashMap<>();
+        Map<String, ColumnDefinition> attrDefinitionMap = new LinkedHashMap<>();
         try{
             // 获取主键
-            // pkSet.getString()中的参数名称参见com.mysql.cj.jdbc.DatabaseMetaDate.getPrimaryKeysFields()
-            ResultSet pkSet = metaData.getPrimaryKeys(null, null, tableName);
-            String pkName = "";
-            while (pkSet.next()) {
-                pkName = pkSet.getString("COLUMN_NAME");
-            }
+            String pkName = getPkName(tableName, metaData);
 
             // 获取table中每个column的相关信息
             // columnSet.getString()中的参数名称参见com.mysql.cj.jdbc.DatabaseMetaDate.createColumnsFields()
@@ -69,6 +65,20 @@ public class MySQLTableResolver extends TableResolver {
         tableDefinition.setColumnMap(attrDefinitionMap);
     }
 
+
+    private String getPkName(String tableName, DatabaseMetaData metaData){
+        String pkName = "";
+        try{
+            // pkSet.getString()中的参数名称参见com.mysql.cj.jdbc.DatabaseMetaDate.getPrimaryKeysFields()
+            ResultSet pkSet = metaData.getPrimaryKeys(null, null, tableName);
+            while (pkSet.next()) {
+                pkName = pkSet.getString("COLUMN_NAME");
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return pkName;
+    }
 
 
 }

@@ -35,13 +35,14 @@ public abstract class TableResolver {
 
     /**
      * 根据配置文件中的单数据源的信息,解析数据库表中的信息,路径手动配置
+     *
      * @param tableName 数据库表名
      * @param exportUrl 导出文件路径 例如:"D:/quick"
      * @return 生成代码相关信息
      */
-    public TableDefinition resolve(String tableName, String exportUrl){
+    public TableDefinition resolve(String tableName, String exportUrl) {
         ConfigInfo configInfo = checkAndConfig(tableName);
-        if (StringUtil.hasText(exportUrl)){
+        if (StringUtil.hasText(exportUrl)) {
             configInfo.setExportUrl(exportUrl + "/" + tableName);
         }
         return this.resolve(configInfo);
@@ -51,7 +52,6 @@ public abstract class TableResolver {
     /**
      * 根据手动配置的单数据库配置信息,解析数据库表中的信息
      *
-     * @param configInfo
      * @return 生成代码相关信息
      */
     public TableDefinition resolve(ConfigInfo configInfo) {
@@ -102,15 +102,28 @@ public abstract class TableResolver {
     /**
      * @return 返回用于获取数据库表信息的DatabaseMetaData
      */
-    private DatabaseMetaData getDatabaseMetaData(ConfigInfo configInfo, Connection connection){
+    private DatabaseMetaData getDatabaseMetaData(ConfigInfo configInfo, Connection connection) {
         if (connection == null) throw new NullPointerException("connection is null");
-        try{
+        try {
             DatabaseMetaData metaData = connection.getMetaData();
             ResultSet set = metaData.getTables(null, null,
                     configInfo.getTableName(), null);
             if (!set.next()) throw new NotFoundException("Datebase table" + configInfo.getTableName() + "not exist");
             return metaData;
-        }catch (SQLException e){
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    private PreparedStatement getPreparedStatement(ConfigInfo configInfo, Connection connection){
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT * FROM ").append(configInfo.getTableName());
+        try {
+
+            return connection.prepareStatement(sql.toString());
+        } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
@@ -135,7 +148,7 @@ public abstract class TableResolver {
      *
      * @return 使用TableDefinition存储表信息
      */
-    public TableDefinition doResolve(ConfigInfo configInfo){
+    public TableDefinition doResolve(ConfigInfo configInfo) {
         TableDefinition tableDefinition = new TableDefinition();
         // 连接数据库
         Connection connection = this.connectDB(configInfo);
@@ -144,6 +157,8 @@ public abstract class TableResolver {
         DatabaseMetaData metaData = getDatabaseMetaData(configInfo, connection);
         this.resolveTableInfo(tableName, tableDefinition, metaData);
         this.resolveColumnsInfo(tableName, tableDefinition, metaData);
+//        PreparedStatement preparedStatement = getPreparedStatement(configInfo, connection);
+//        this.resolveColumnsInfo(tableName, tableDefinition, preparedStatement, metaData);
         // 设置生成代码的配置信息
         tableDefinition.setConfigInfo(configInfo);
         // 关闭数据库
@@ -153,7 +168,6 @@ public abstract class TableResolver {
 
 
     public abstract void resolveTableInfo(String tableName, TableDefinition tableDefinition, DatabaseMetaData metaData);
-
 
     public abstract void resolveColumnsInfo(String tableName, TableDefinition tableDefinition, DatabaseMetaData metaData);
 
