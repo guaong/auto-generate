@@ -37,13 +37,13 @@ public class IServiceCreator extends InterfaceCreator {
         classBean.setClassType(JavaCreator.TYPE_INTERFACE);
 
         // 类的注解，继承，实现所需要的import
-        Set<String> classImportSet = new HashSet<>(
-                Collections.singletonList("org.jeecg.common.system.base.service.JeecgService"));
+        Set<String> classImportSet = new HashSet<>();
+        classImportSet.add("com.baomidou.mybatisplus.extension.service.IService");
         classImportSet.add(configInfo.getPackageUrl() + ".entity." + entityName);
         classBean.setImportSet(classImportSet);
 
         // 类继承
-        String classExtends = "JeecgService<" + entityName + ">";
+        String classExtends = "IService<" + entityName + ">";
         classBean.setExtend(classExtends);
 
         return classBean;

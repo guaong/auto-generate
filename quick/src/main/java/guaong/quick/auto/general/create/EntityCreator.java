@@ -19,6 +19,7 @@ import java.util.*;
 public class EntityCreator extends ClassCreator {
 
     private final String[] classImports = {
+            "com.baomidou.mybatisplus.annotation.*",
             "java.io.Serializable",
             "lombok.Data", "lombok.EqualsAndHashCode", "lombok.experimental.Accessors"};
 

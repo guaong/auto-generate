@@ -15,8 +15,7 @@ public class ControllerCreator  extends ClassCreator {
 
     private final String[] classImports = {
             "lombok.extern.slf4j.Slf4j",
-            "org.springframework.web.bind.annotation.*",
-            "org.springframework.web.bind.annotation"};
+            "org.springframework.web.bind.annotation.*"};
 
     private final String[] classAnnotations = {"@Slf4j","@RestController"};
 
@@ -43,9 +42,12 @@ public class ControllerCreator  extends ClassCreator {
                 .append(defaultName)
                 .append(", \n\t\t\t\t@RequestParam(name = \"pageNo\", defaultValue = \"1\") Integer pageNo, \n\t\t\t\t@RequestParam(name = \"pageSize\", defaultValue = \"10\") Integer pageSize, \n\t\t\t\tHttpServletRequest req) {")
                 .append(this.newlines(1));
+//        str.append(this.indentation(2)).append("QueryWrapper<").append(entityName)
+//                .append("> queryWrapper = QueryGenerator.initQueryWrapper(")
+//                .append(defaultName).append(", req.getParameterMap());").append(this.newlines(1));
         str.append(this.indentation(2)).append("QueryWrapper<").append(entityName)
-                .append("> queryWrapper = QueryGenerator.initQueryWrapper(")
-                .append(defaultName).append(", req.getParameterMap());").append(this.newlines(1));
+                .append("> queryWrapper = new QueryWrapper<>();")
+                .append(this.newlines(1));
         str.append(this.indentation(2)).append("Page<").append(entityName).append("> page = new Page<")
                 .append(entityName).append(">(pageNo, pageSize);").append(this.newlines(1));
         str.append(this.indentation(2)).append("IPage<").append(entityName).append("> pageList = ")
@@ -119,7 +121,7 @@ public class ControllerCreator  extends ClassCreator {
         fieldBean.setName(tableDefinition.getTableName() + "Service");
         // 属性import
         Set<String> attrImportSet = new HashSet<>(Collections.singletonList(
-                configInfo.getPackageUrl() + "." + serviceName));
+                configInfo.getPackageUrl() + ".service." + serviceName));
         attrImportSet.addAll(Arrays.asList(attrImports));
         fieldBean.setImportSet(attrImportSet);
         // 属性注解
@@ -139,7 +141,7 @@ public class ControllerCreator  extends ClassCreator {
                 "com.baomidou.mybatisplus.core.metadata.IPage",
                 "com.baomidou.mybatisplus.extension.plugins.pagination.Page",
                 "javax.servlet.http.HttpServletRequest"};
-        Set<String> listSet = new HashSet<>(Collections.singletonList(configInfo.getPackageUrl() + "." + entityName));
+        Set<String> listSet = new HashSet<>(Collections.singletonList(configInfo.getPackageUrl() + ".entity." + entityName));
         listSet.addAll(Arrays.asList(listImports));
         listBean.setImportSet(listSet);
         methodBeanList.add(listBean);

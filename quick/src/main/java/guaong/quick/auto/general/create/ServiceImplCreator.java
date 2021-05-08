@@ -43,6 +43,7 @@ public class ServiceImplCreator extends ClassCreator {
         Set<String> classImportSet = new HashSet<>(Arrays.asList(classImports));
         classImportSet.add(configInfo.getPackageUrl() + ".entity." + entityName);
         classImportSet.add(configInfo.getPackageUrl() + ".mapper." + mapperName);
+        classImportSet.add(configInfo.getPackageUrl() + ".service." + serviceName);
         classBean.setImportSet(classImportSet);
         // 类上的注解
         List<String> classAnnotationList = new ArrayList<>(Collections.singletonList("@Service"));
