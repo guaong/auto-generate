@@ -8,10 +8,7 @@ import guaong.quick.auto.core.create.creator.JavaCreator;
 import guaong.quick.auto.core.resovle.bean.TableDefinition;
 import guaong.quick.auto.core.util.StringUtil;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class MapperCreator extends InterfaceCreator {
 
@@ -39,10 +36,15 @@ public class MapperCreator extends InterfaceCreator {
         classBean.setClassName(entityName + "Mapper");
         classBean.setClassType(JavaCreator.TYPE_INTERFACE);
 
+        // 类上的注解
+        List<String> classAnnotationList = new ArrayList<>(Collections.singletonList("@Mapper"));
+        classBean.setAnnotationList(classAnnotationList);
+
         // 类的注解，继承，实现所需要的import
         Set<String> classImportSet = new HashSet<>(
                 Collections.singletonList("com.baomidou.mybatisplus.core.mapper.BaseMapper"));
         classImportSet.add(configInfo.getPackageUrl() + ".entity." + entityName);
+        classImportSet.add("org.apache.ibatis.annotations.Mapper");
         classBean.setImportSet(classImportSet);
 
         // 类继承
