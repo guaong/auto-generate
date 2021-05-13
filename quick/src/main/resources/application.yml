@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
   tomcat:
     max-swallow-size: -1
   error:
@@ -7,7 +7,7 @@ server:
     include-stacktrace: ALWAYS
     include-message: ALWAYS
   servlet:
-    context-path: /aptp
+    context-path: /quick
   compression:
     enabled: true
     min-response-size: 1024
@@ -22,7 +22,7 @@ spring:
     password: 123456
 
 mybatis-plus:
-  mapper-locations: classpath*:com/aptp/**/mapper/xml/TestMapper.xml
+  mapper-locations: classpath*:guaong/**/xml/*Mapper.xml
   global-config:
     # 关闭MP3.0自带的banner
     banner: false
