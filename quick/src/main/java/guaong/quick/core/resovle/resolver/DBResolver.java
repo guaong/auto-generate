@@ -5,6 +5,7 @@ import guaong.quick.core.resovle.SingleDBConfig;
 import guaong.quick.core.resovle.bean.DBConfigInfo;
 import guaong.quick.core.resovle.bean.TableDefinition;
 import guaong.quick.core.resovle.bean.TableConfigInfo;
+import guaong.quick.core.resovle.bean.TableInfo;
 import guaong.quick.core.util.StringUtil;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +66,7 @@ public abstract class DBResolver implements IResolver{
      *
      * @return 获取数据库所有表名
      */
-    public List<String> resolve(){
+    public List<TableInfo> resolve(){
         return this.resolve(checkAndConfig());
     }
 
@@ -73,7 +74,7 @@ public abstract class DBResolver implements IResolver{
      *
      * @return 获取数据库所有表名
      */
-    public List<String> resolve(DBConfigInfo dbConfigInfo){
+    public List<TableInfo> resolve(DBConfigInfo dbConfigInfo){
         return this.doResolve(dbConfigInfo);
     }
 
@@ -192,8 +193,8 @@ public abstract class DBResolver implements IResolver{
         return tableDefinition;
     }
 
-    public List<String> doResolve(DBConfigInfo dbConfigInfo){
-        List<String> list = null;
+    public List<TableInfo> doResolve(DBConfigInfo dbConfigInfo){
+        List<TableInfo> list = null;
         // 连接数据库
         Connection connection = this.connectDB(dbConfigInfo);
         if (connection == null) throw new NullPointerException("connection is null");
@@ -215,5 +216,5 @@ public abstract class DBResolver implements IResolver{
 
     public abstract void resolveColumnsInfo(String tableName, TableDefinition tableDefinition, DatabaseMetaData metaData);
 
-    public abstract List<String> resolveDBInfo(DatabaseMetaData metaData);
+    public abstract List<TableInfo> resolveDBInfo(DatabaseMetaData metaData);
 }

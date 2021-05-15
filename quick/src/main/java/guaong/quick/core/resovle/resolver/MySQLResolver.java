@@ -2,6 +2,7 @@ package guaong.quick.core.resovle.resolver;
 
 import guaong.quick.core.resovle.bean.ColumnDefinition;
 import guaong.quick.core.resovle.bean.TableDefinition;
+import guaong.quick.core.resovle.bean.TableInfo;
 import guaong.quick.core.util.DBUtil;
 import org.springframework.stereotype.Component;
 
@@ -68,12 +69,17 @@ public class MySQLResolver extends DBResolver {
     }
 
     @Override
-    public List<String> resolveDBInfo(DatabaseMetaData metaData) {
+    public List<TableInfo> resolveDBInfo(DatabaseMetaData metaData) {
         try {
-            List<String> list = new ArrayList<>();
+            List<TableInfo> list = new ArrayList<>();
             ResultSet set = metaData.getTables(null, null, null, new String[] { "TABLE" });
             while (set.next()){
-                list.add(set.getString("TABLE_NAME"));
+                TableInfo tableInfo = new TableInfo();
+                tableInfo.setTableName(set.getString("TABLE_NAME"));
+                tableInfo.setTableCat(set.getString("TABLE_CAT"));
+                tableInfo.setTableType(set.getString("TABLE_TYPE"));
+                tableInfo.setRemark(set.getString("REMARK"));
+                list.add(tableInfo);
             }
             return list;
         } catch (SQLException e) {
