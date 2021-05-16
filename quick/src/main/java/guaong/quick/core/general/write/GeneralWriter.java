@@ -1,4 +1,4 @@
-package guaong.quick.general.write;
+package guaong.quick.core.general.write;
 
 import guaong.quick.core.resovle.bean.TableConfigInfo;
 import guaong.quick.core.exception.FileException;

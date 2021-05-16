@@ -2,10 +2,9 @@ package guaong.quick;
 
 import guaong.quick.core.resovle.SingleDBConfig;
 import guaong.quick.core.resovle.bean.TableConfigInfo;
-import guaong.quick.core.resovle.bean.TableDefinition;
 import guaong.quick.core.resovle.resolver.MySQLResolver;
-import guaong.quick.general.AutoGeneration;
-import org.junit.jupiter.api.Test;
+import guaong.quick.core.general.AutoGeneration;
+import org.testng.annotations.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 

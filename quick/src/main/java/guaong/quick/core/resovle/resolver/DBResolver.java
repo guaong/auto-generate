@@ -34,7 +34,7 @@ public abstract class DBResolver implements IResolver{
      * @return 生成代码相关信息
      */
     public TableDefinition resolveTable(String tableName) {
-        return this.resolveTable(tableName, null);
+        return this.resolveTable(checkAndConfig(tableName));
     }
 
     /**
@@ -48,6 +48,17 @@ public abstract class DBResolver implements IResolver{
         TableConfigInfo tableConfigInfo = checkAndConfig(tableName);
         if (StringUtil.hasText(exportUrl)) {
             tableConfigInfo.setExportUrl(exportUrl + "/" + tableName);
+        }
+        return this.resolveTable(tableConfigInfo);
+    }
+
+    public TableDefinition resolveTable(String tableName, String exportUrl, String packageUrl) {
+        TableConfigInfo tableConfigInfo = checkAndConfig(tableName);
+        if (StringUtil.hasText(exportUrl)) {
+            tableConfigInfo.setExportUrl(exportUrl + "/" + tableName);
+        }
+        if (StringUtil.hasText(packageUrl)){
+            tableConfigInfo.setPackageUrl(packageUrl + "." + tableName);
         }
         return this.resolveTable(tableConfigInfo);
     }
@@ -80,8 +91,8 @@ public abstract class DBResolver implements IResolver{
 
 
     private TableConfigInfo checkAndConfig(String tableName) {
-        TableConfigInfo tableConfigInfo = new TableConfigInfo();
-        tableConfigInfo = (TableConfigInfo) checkAndConfig();
+        DBConfigInfo dbConfigInfo = checkAndConfig();
+        TableConfigInfo tableConfigInfo = new TableConfigInfo(dbConfigInfo);
         tableConfigInfo.setTableName(tableName);
         tableConfigInfo.setPackageUrl(tableName);
         tableConfigInfo.setExportUrl("../../../" + tableName);

@@ -7,10 +7,7 @@ import guaong.quick.core.util.DBUtil;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * MySQL table resolver
@@ -75,10 +72,11 @@ public class MySQLResolver extends DBResolver {
             ResultSet set = metaData.getTables(null, null, null, new String[] { "TABLE" });
             while (set.next()){
                 TableInfo tableInfo = new TableInfo();
+                tableInfo.setId(UUID.randomUUID().toString().replace("-", ""));
                 tableInfo.setTableName(set.getString("TABLE_NAME"));
                 tableInfo.setTableCat(set.getString("TABLE_CAT"));
                 tableInfo.setTableType(set.getString("TABLE_TYPE"));
-                tableInfo.setRemark(set.getString("REMARK"));
+                tableInfo.setRemark(set.getString("REMARKS"));
                 list.add(tableInfo);
             }
             return list;

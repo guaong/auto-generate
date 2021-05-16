@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class TableInfo implements Serializable {
 
+    private String id;
+
     private String tableName;
 
     private String tableType;
@@ -15,11 +17,20 @@ public class TableInfo implements Serializable {
 
     public TableInfo(){}
 
-    public TableInfo(String tableName, String tableType, String tableCat, String remark) {
+    public TableInfo(String id, String tableName, String tableType, String tableCat, String remark) {
+        this.id = id;
         this.tableName = tableName;
         this.tableType = tableType;
         this.tableCat = tableCat;
         this.remark = remark;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTableName() {

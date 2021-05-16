@@ -1,4 +1,4 @@
-package guaong.quick.general.create;
+package guaong.quick.core.general.create;
 
 import guaong.quick.core.resovle.bean.TableConfigInfo;
 import guaong.quick.core.util.StringUtil;

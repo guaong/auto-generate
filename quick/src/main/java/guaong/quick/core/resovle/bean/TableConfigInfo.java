@@ -19,8 +19,10 @@ public class TableConfigInfo extends DBConfigInfo{
     // 导入的路径 例如:"D:/quick/{tableName}"
     private String exportUrl;
 
+    public TableConfigInfo(){}
 
-    public TableConfigInfo() {
+    public TableConfigInfo(DBConfigInfo dbConfigInfo) {
+        super(dbConfigInfo.getDbUrl(), dbConfigInfo.getUsername(), dbConfigInfo.getPassword(), dbConfigInfo.getDriver());
     }
 
     public TableConfigInfo(String packageUrl, String exportUrl, String tableName, String dbUrl, String username, String password, String driver) {

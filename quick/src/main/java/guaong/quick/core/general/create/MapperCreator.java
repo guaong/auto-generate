@@ -1,4 +1,4 @@
-package guaong.quick.general.create;
+package guaong.quick.core.general.create;
 
 import guaong.quick.core.resovle.bean.TableConfigInfo;
 import guaong.quick.core.create.bean.ClassBean;
@@ -10,9 +10,9 @@ import guaong.quick.core.util.StringUtil;
 
 import java.util.*;
 
-public class IServiceCreator extends InterfaceCreator {
+public class MapperCreator extends InterfaceCreator {
 
-    public IServiceCreator(TableDefinition tableDefinition) {
+    public MapperCreator(TableDefinition tableDefinition) {
         super(tableDefinition);
     }
 
@@ -32,18 +32,23 @@ public class IServiceCreator extends InterfaceCreator {
         TableConfigInfo tableConfigInfo = tableDefinition.getConfigInfo();
         String entityName = StringUtil.convert2JClassName(tableDefinition.getTableName());
 
-        classBean.setPackageUrl(tableConfigInfo.getPackageUrl() + ".service");
-        classBean.setClassName("I" + entityName + "Service");
+        classBean.setPackageUrl(tableConfigInfo.getPackageUrl() + ".mapper");
+        classBean.setClassName(entityName + "Mapper");
         classBean.setClassType(JavaCreator.TYPE_INTERFACE);
 
+        // 类上的注解
+        List<String> classAnnotationList = new ArrayList<>(Collections.singletonList("@Mapper"));
+        classBean.setAnnotationList(classAnnotationList);
+
         // 类的注解，继承，实现所需要的import
-        Set<String> classImportSet = new HashSet<>();
-        classImportSet.add("com.baomidou.mybatisplus.extension.service.IService");
+        Set<String> classImportSet = new HashSet<>(
+                Collections.singletonList("com.baomidou.mybatisplus.core.mapper.BaseMapper"));
         classImportSet.add(tableConfigInfo.getPackageUrl() + ".entity." + entityName);
+        classImportSet.add("org.apache.ibatis.annotations.Mapper");
         classBean.setImportSet(classImportSet);
 
         // 类继承
-        String classExtends = "IService<" + entityName + ">";
+        String classExtends = "BaseMapper<" + entityName + ">";
         classBean.setExtend(classExtends);
 
         return classBean;

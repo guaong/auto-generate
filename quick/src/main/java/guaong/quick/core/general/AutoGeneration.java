@@ -1,9 +1,9 @@
-package guaong.quick.general;
+package guaong.quick.core.general;
 
 import guaong.quick.core.create.creator.JavaCreator;
 import guaong.quick.core.resovle.bean.TableDefinition;
-import guaong.quick.general.create.*;
-import guaong.quick.general.write.GeneralWriter;
+import guaong.quick.core.general.create.*;
+import guaong.quick.core.general.write.GeneralWriter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +19,8 @@ public class AutoGeneration {
 
     public boolean todo(){
         Map<Integer, String> generalMap = new HashMap<>();
+
+        System.out.println("开始生成" + tableDefinition.getTableName() + "相关代码");
 
         JavaCreator entity = new EntityCreator(tableDefinition);
         String entityStr = entity.create().toString();
